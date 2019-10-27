@@ -1,10 +1,18 @@
 {
-  "name": "Movies",
+  "name": "movies",
   "version": "1.0.0",
   "description": "Microservices of Movies",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf dist",
+    "lint:code": "eslint src -f stylish",
+    "lint:report": "eslint src -f html -o report/lint.html",
+    "predevelop": "npm run clean && npm run lint:code",
+    "develop": "nodemon src/server",
+    "prebuild": "npm run clean && npm run lint:report",
+    "build": "babel src --out-dir dist --copy-files",
+    "serve": "cross-env NODE_ENV=production node ./dist/server",
+    "prod": "npm run build && npm run serve"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +40,7 @@
   "dependencies": {
     "@hapi/joi": "^16.1.7",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "cross-env": "^6.0.3",
     "express": "^4.17.1",
     "helmet": "^3.21.2",
