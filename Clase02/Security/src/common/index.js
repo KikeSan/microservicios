@@ -7,7 +7,8 @@ const initializeDatabase = () => {
   return new Promise((resolve, reject) => {
     const MongoClient = mongodb.MongoClient
 
-    const uri = `mongodb+srv://${env.DB.USER}:${env.DB.PWD}@${env.DB.HOST}/test?retryWrites=true&w=majority`
+    // const uri = `mongodb+srv://${env.DB.USER}:${env.DB.PWD}@${env.DB.HOST}/test?retryWrites=true&w=majority`
+    const uri = `mongodb://${env.DB.USER}:${env.DB.PWD}@${env.DB.HOST}:${env.DB.PORT}/${env.DB.NAME}?retryWrites=true&w=majority`
 
     const cliente = new MongoClient(uri, {
       useNewUrlParser: true,
