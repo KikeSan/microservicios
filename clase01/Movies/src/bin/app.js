@@ -4,6 +4,7 @@ import yenv from 'yenv'
 import * as bodyParser from 'body-parser'
 import cors from 'cors'
 import helmet from 'helmet'
+import { routes } from '../routes'
 
 const app = express()
 const env = yenv()
@@ -16,6 +17,8 @@ const initializeServer = db => {
     app.use(cors())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
+
+    app.use(routes(db))
 
     httpServer
       .listen(env.PORT)
