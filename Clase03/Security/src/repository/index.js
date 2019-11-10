@@ -1,6 +1,7 @@
 import yenv from 'yenv'
 import bcrypt from 'bcrypt'
-import { createToken } from '../utils/token'
+import { createToken, validateToken } from '../utils/token'
+const ObjectId = require('mongodb').ObjectID
 
 const env = yenv()
 
@@ -8,7 +9,7 @@ const repository = db => {
   const collection = db.collection(env.DB.COLLECTION)
 
   const getUsers = async () => {
-    const users = await collection.find()
+    const users = await collection.find().toArray()
 
     return users
   }
@@ -21,17 +22,17 @@ const repository = db => {
     return true
   }
   const updateUser = async (_id, name) => {
-    await collection.findOneAndUpdate({ _id }, { name })
+    await collection.updateOne({ _id: ObjectId(_id) }, { $set: { name } })
 
     return true
   }
   const getUser = async id => {
-    const user = collection.findOne({ _id: id })
+    const user = collection.findOne({ _id: ObjectId(id) })
 
     return user
   }
   const deleteUser = async id => {
-    await collection.findOneAndRemove({ _id: id })
+    await collection.deleteOne({ _id: ObjectId(id) })
 
     return true
   }
@@ -44,14 +45,14 @@ const repository = db => {
       if (match) {
         const token = createToken(user._id, user.name)
         return { token }
+      } else {
+        return false
       }
-
-      return false
     } else {
       return false
     }
   }
-  const validateToken = async token => {
+  const validateInfoToken = async token => {
     const payload = await validateToken(token)
 
     return payload
@@ -75,7 +76,7 @@ const repository = db => {
     deleteUser,
     login,
     validateApiKey,
-    validateToken,
+    validateInfoToken,
     generateApiKey,
     disconnect,
   }

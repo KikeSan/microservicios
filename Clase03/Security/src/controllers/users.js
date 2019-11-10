@@ -11,7 +11,7 @@ export class UsersController {
     this.login = this.login.bind(this)
     this.generateApiKey = this.generateApiKey.bind(this)
     this.validateApiKey = this.validateApiKey.bind(this)
-    this.validateToken = this.validateToken.bind(this)
+    this.validateInfoToken = this.validateInfoToken.bind(this)
   }
 
   async getUsers(req, res) {
@@ -67,5 +67,13 @@ export class UsersController {
         message: 'User not logged',
       })
     }
+  }
+
+  async validateInfoToken(req, res, next) {
+    const token = req.headers.authorization.split(' ')[1]
+    const payload = await this.repo.validateInfoToken(token)
+    res.locals._id = payload._id
+    res.locals.name = payload.name
+    next()
   }
 }
