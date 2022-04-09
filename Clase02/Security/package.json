@@ -45,7 +45,7 @@
     "express": "^4.17.1",
     "helmet": "^3.21.2",
     "jwt-simple": "^0.5.6",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongodb": "^3.3.3",
     "rimraf": "^3.0.0",
     "yenv": "^2.1.0"
